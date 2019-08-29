@@ -58,13 +58,42 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+
+   //  we wait for a keydown event
       window.addEventListener('keydown', function(e) {
+           //  we check that the event keycode can be found for an audio and a div with class key
+
         const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+        const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+          // only if we have a keycode that match an existing audio
+
         if(!audio) return ;
+        // only if we have a keycode that match an existing audio
+        // we reset the sound to 0
         audio.currentTime = 0;
+        // we play the audio
         audio.play();
+        // we add a class to our key
+        key.classList.add('playing');
         });
-      /// adding the script here
+
+    // we make a global selection of keys to be able to apply an effect to each
+    const keys = document.querySelectorAll('.key');
+    // if on any of my keys i can detext the end of a transition then i launch my function to remove it
+    keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+    function removeTransition(e) {
+        // ok so first... beware there are many property transition end on a page so we must only do something on the transform property
+        if (e.propertyName !== 'transform') return;
+        // but if this is a transform... then i can remove the class playing as soon as the transistion end (see the class  .key in the css )
+        this.classList.remove('playing');
+    }
+
+
+
+
+
+
 </script>
 
 
