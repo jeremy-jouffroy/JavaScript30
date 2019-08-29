@@ -9,10 +9,14 @@
 
     <div class="clock">
       <div class="clock-face">
-        <div class="hand hour-hand"></div>
-        <div class="hand min-hand"></div>
-        <div class="hand second-hand"></div>
+        <div class="hand hour-hand hour-color"></div>
+        <div class="hand min-hand min-color"></div>
+        <div class="hand second-hand second-color"></div>
       </div>
+    </div>
+
+    <div class="timer-text">
+      Time is <span class="hour-text hour-color"></span> : <span class="minute-text min-color"></span> : <span class="second-text second-color"></span>
     </div>
 
 
@@ -59,14 +63,75 @@
     .hand {
       width: 50%;
       height: 6px;
-      background: black;
-      position: absolute;
+/*      background: black;
+*/      position: absolute;
       top: 50%;
+      /* lets make sure the right of the aiguille the point of origin of the transformation */
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.42, 0, 0, 2.62);
+
+    }
+
+
+
+    .hour-color {
+      background: red;
+    }
+
+    .min-color {
+      background: green;
+    }
+
+    .second-color {
+      background: black;
+      color: white;
+    }
+
+    .timer-text{
+      padding: 2rem;
     }
 
   </style>
 
   <script>
+    /* lets select all our hand (aiguille)  */
+    const hourHand = document.querySelector('.hour-hand');
+    const minHand = document.querySelector('.min-hand');
+    const secondHand = document.querySelector('.second-hand');
+    const hourText = document.querySelector('.hour-text');
+    const minuteText = document.querySelector('.minute-text');
+    const secondText = document.querySelector('.second-text');
+
+
+    function setDate(){
+      const now = new Date();
+
+      const second = now.getSeconds();
+      secondText.innerHTML = second ;
+      const secondDegrees =  ((second / 60) * 360) + 90 ;
+      /* we transform the angle of the seconds into degrees */
+      secondHand.style.transform = `rotate(${secondDegrees}deg)`;
+
+      const minute = now.getMinutes();
+      minuteText.innerHTML = minute ;
+      const minuteDegrees =  ((minute / 60) * 360) + ((second/60)*6) + 90;
+      minHand.style.transform = `rotate(${minuteDegrees}deg)`;
+
+      const hour = now.getHours();
+      hourText.innerHTML = hour ;
+      const hourDegrees = ((hour / 24) * 360) + ((minute/60)*30) + 90 ;
+      console.log(hourDegrees);
+
+      hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+
+
+    }
+
+    setInterval(setDate, 1000);
+    setDate();
+
 
 
   </script>
