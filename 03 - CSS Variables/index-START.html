@@ -24,7 +24,7 @@
     :root {
       --base: #ffc600;
       --spacing: 10px;
-      --blur: 10px;
+      --blur: 2px;
     }
 
     img {
@@ -60,11 +60,13 @@
   </style>
 
   <script>
-    const inputs = document.querySelectorAll('.controls input')
+    const inputs = document.querySelectorAll('.controls input');
     function handleUpdates(){
       suffix = this.dataset.sizing || '';
       val = this.value;
-      console.log(`${val}${suffix}`);
+      nameElement = this.name;
+     // console.log(`--${nameElement}: ${val}${suffix}`);
+      document.documentElement.style.setProperty(`--${nameElement}`, val + suffix);
     }
     inputs.forEach(input => input.addEventListener('change', handleUpdates))
     inputs.forEach(input => input.addEventListener('mousemove', handleUpdates))
